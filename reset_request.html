@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="h3">Reset Password</h2>
+                        <p class="text-muted">Enter your email to receive reset instructions</p>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('reset_request') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.email(class="form-control", id="floatingEmail", placeholder="Email") }}
+                            <label for="floatingEmail">Email</label>
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.email.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid mb-3">
+                            <button class="btn btn-primary btn-lg" type="submit">Request Reset</button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="{{ url_for('login') }}" class="text-decoration-none">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

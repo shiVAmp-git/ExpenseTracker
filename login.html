@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="h3">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your account</p>
+                    </div>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST" action="{{ url_for('login') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.username(class="form-control", id="floatingUsername", placeholder="Username or Email") }}
+                            <label for="floatingUsername">Username or Email</label>
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.username.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.password(class="form-control", id="floatingPassword", placeholder="Password") }}
+                            <label for="floatingPassword">Password</label>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.password.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="{{ url_for('reset_request') }}" class="text-decoration-none">Forgot password?</a>
+                        </div>
+                        
+                        <div class="d-grid mb-3">
+                            <button class="btn btn-primary btn-lg" type="submit">Log In</button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-muted">Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

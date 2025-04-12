@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="mb-5">
+                <img src="{{ url_for('static', filename='images/500.svg') }}" alt="500 Error" class="img-fluid" style="max-height: 300px;">
+            </div>
+            <h1 class="display-4 mb-4">Internal Server Error</h1>
+            <p class="lead mb-4">Something went wrong on our end. We're working to fix it.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-lg">Go to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

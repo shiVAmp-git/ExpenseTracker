@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2">Dashboard</h1>
+            <p class="text-muted">Welcome back, {{ session.username }}! Here's your financial overview.</p>
+        </div>
+    </div>
+    
+    <div class="row g-4 mb-4">
+        <!-- Monthly Summary Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 mb-0">Monthly Expenses</h2>
+                        <span class="badge bg-primary bg-opacity-10 text-primary">Current Month</span>
+                    </div>
+                    <h3 class="mb-1">${{ "%.2f"|format(total_expenses) }}</h3>
+                    <p class="text-muted mb-0">Total spent this month</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{{ url_for('view_transactions', year=now.year, month=now.month) }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Quick Actions</h2>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('add_transaction') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i> Add Transaction
+                        </a>
+                        <a href="{{ url_for('view_transactions') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-2"></i> View All Transactions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Insights Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Insights</h2>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0 bg-primary bg-opacity-10 text-primary rounded p-2 me-3">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0">You've spent <strong>${{ "%.2f"|format(total_expenses) }}</strong> this month.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 bg-primary bg-opacity-10 text-primary rounded p-2 me-3">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0">Check your <a href="{{ url_for('category_visualization') }}">spending patterns</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Transactions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Recent Transactions</h2>
+                        <a href="{{ url_for('add_transaction') }}" class="btn btn-sm btn-primary">Add New</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if transactions %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th class="text-end">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for t in transactions %}
+                                        <tr>
+                                            <td>{{ t.date }}</td>
+                                            <td>{{ t.description }}</td>
+                                            <td><span class="badge bg-primary bg-opacity-10 text-primary">{{ t.category }}</span></td>
+                                            <td class="text-end">${{ "%.2f"|format(t.amount) }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="{{ url_for('view_transactions') }}" class="btn btn-outline-primary">View All Transactions</a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <img src="{{ url_for('static', filename='images/no-data.svg') }}" alt="No transactions" class="img-fluid mb-3" style="max-height: 150px;">
+                            <h3 class="h5">No transactions yet</h3>
+                            <p class="text-muted">Start by adding your first transaction</p>
+                            <a href="{{ url_for('add_transaction') }}" class="btn btn-primary">Add Transaction</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
